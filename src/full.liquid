@@ -4,21 +4,21 @@
   <div class="w--full" style="border-bottom: 1px solid black; padding-bottom: 10px; margin-bottom: 1.5em;">
     <div class="flex flex--row flex--center-x flex--center-y gap--small" style="margin-bottom: 4px;">
       <img class="image" src="{{ wx_now_icon }}" style="width: 30px; height: 30px;">
-      <span class="value value--xsmall">{{ wx_now_conditions }}</span>
+      <span class="value value--small">{{ wx_now_conditions }}</span>
       {%- comment -%} thermometer glyph + temp {%- endcomment -%}
       <span class="flex flex--row flex--center-y gap--xsmall">
         <img class="image" src="https://trmnl.com/images/plugins/weather/wi-thermometer.svg" style="width: 30px; height: 30px;">
-        <span class="value value--xsmall">{{ wx_temp }}° feels {{ wx_feels }}°</span>
+        <span class="value value--small">{{ wx_temp }}° feels {{ wx_feels }}°</span>
       </span>
       {%- comment -%} humidity glyph + humidity {%- endcomment -%}
       <span class="flex flex--row flex--center-y gap--xsmall">
         <img class="image" src="https://trmnl.com/images/plugins/weather/wi-humidity.svg" style="width: 30px; height: 30px;">
-        <span class="value value--xsmall">{{ wx_humidity }}% humidity</span>
+        <span class="value value--small">{{ wx_humidity }}% humidity</span>
       </span>
     </div>
     <div class="flex flex--row flex--center-x flex--center-y gap--small">
       <img class="image" src="{{ wx_today_icon }}" style="width: 30px; height: 30px;">
-      <span class="value value--xsmall">{{ wx_today_conditions }}</span>
+      <span class="value value--small">{{ wx_today_conditions }}</span>
       {%- comment -%} today's high above 85° swaps the thermometer for the "hot" glyph {%- endcomment -%}
       {% if wx_high > 85 %}
         {% assign today_temp_icon = "https://trmnl.com/images/plugins/weather/wi-hot.svg" %}
@@ -27,11 +27,11 @@
       {% endif %}
       <span class="flex flex--row flex--center-y gap--xsmall">
         <img class="image" src="{{ today_temp_icon }}" style="width: 30px; height: 30px;">
-        <span class="value value--xsmall">H {{ wx_high }}° L {{ wx_low }}°</span>
+        <span class="value value--small">H {{ wx_high }}° L {{ wx_low }}°</span>
       </span>
       <span class="flex flex--row flex--center-y gap--xsmall">
         <img class="image" src="https://trmnl.com/images/plugins/weather/wi-raindrop.svg" style="width: 30px; height: 30px;">
-        <span class="value value--xsmall">{{ wx_rain }}% rain</span>
+        <span class="value value--small">{{ wx_rain }}% rain</span>
       </span>
     </div>
   </div>

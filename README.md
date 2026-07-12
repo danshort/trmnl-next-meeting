@@ -44,4 +44,23 @@ Plugin configuration (name, strategy, framework version, custom fields) is in
 ## Local development
 
 These files follow the [`trmnlp`](https://github.com/usetrmnl/trmnlp) layout, so
-you can preview locally with `trmnlp serve`.
+you can preview all four sizes in the browser with live reload.
+
+Requires **Ruby ≥ 3.4** (the CLI is shipped as the `trmnl_preview` gem):
+
+```sh
+# macOS system Ruby is too old; install a modern Ruby first, e.g.:
+brew install ruby
+# then make sure it's on your PATH (Homebrew keg-only):
+export PATH="$(brew --prefix ruby)/bin:$PATH"
+
+gem install trmnl_preview
+trmnlp serve            # http://localhost:4567
+```
+
+Local mock data lives in `.trmnlp.yml` (gitignored). Because this plugin uses the
+`plugin_merge` strategy, its data sources (`calendar_source`,
+`tempest_weather_station_347799`) don't exist locally — `.trmnlp.yml` fakes them
+so the preview renders a populated screen. The current/next logic is
+time-relative, so adjust the sample event dates/times to "now" to see the
+"In a meeting" vs "Available" states.

@@ -1,20 +1,57 @@
-<div class="layout layout--col">
+<div class="layout layout--col layout--top">
 
-  {%- comment -%} ===== Availability hero ===== {%- endcomment -%}
-  <div class="columns" style="margin-bottom: 4em;">
-    <div class="column">
-      <div class="richtext text--center">
-        {{ max_temp }}
-        {% if is_busy %}
-          <span class="value value--xxxlarge">In a meeting</span>
-          <span class="value value--large">until {{ current_event.end }}</span>
-        {% elsif next_event %}
-          <span class="value value--xxxlarge">Available</span>
-          <span class="value value--large">until {{ next_event.start }}{% if next_is_other_day %} {{ next_day_label }}{% endif %}</span>
-        {% else %}
-          <span class="value value--xxxlarge">Available</span>
-          <span class="value value--large">nothing scheduled</span>
-        {% endif %}
+  {%- comment -%} ===== Weather strip (Tempest): now on top, today below ===== {%- endcomment -%}
+  <div class="w--full" style="border-bottom: 1px solid black; padding-bottom: 10px; margin-bottom: 1.5em;">
+    <div class="flex flex--row flex--center-x flex--center-y gap--small" style="margin-bottom: 4px;">
+      <img class="image" src="{{ wx_now_icon }}" style="width: 30px; height: 30px;">
+      <span class="value value--xsmall">{{ wx_now_conditions }}</span>
+      {%- comment -%} thermometer glyph + temp {%- endcomment -%}
+      <span class="flex flex--row flex--center-y gap--xsmall">
+        <img class="image" src="https://trmnl.com/images/plugins/weather/wi-thermometer.svg" style="width: 30px; height: 30px;">
+        <span class="value value--xsmall">{{ wx_temp }}° feels {{ wx_feels }}°</span>
+      </span>
+      {%- comment -%} humidity glyph + humidity {%- endcomment -%}
+      <span class="flex flex--row flex--center-y gap--xsmall">
+        <img class="image" src="https://trmnl.com/images/plugins/weather/wi-humidity.svg" style="width: 30px; height: 30px;">
+        <span class="value value--xsmall">{{ wx_humidity }}% humidity</span>
+      </span>
+    </div>
+    <div class="flex flex--row flex--center-x flex--center-y gap--small">
+      <img class="image" src="{{ wx_today_icon }}" style="width: 30px; height: 30px;">
+      <span class="value value--xsmall">{{ wx_today_conditions }}</span>
+      {%- comment -%} today's high above 85° swaps the thermometer for the "hot" glyph {%- endcomment -%}
+      {% if wx_high > 85 %}
+        {% assign today_temp_icon = "https://trmnl.com/images/plugins/weather/wi-hot.svg" %}
+      {% else %}
+        {% assign today_temp_icon = "https://trmnl.com/images/plugins/weather/wi-thermometer.svg" %}
+      {% endif %}
+      <span class="flex flex--row flex--center-y gap--xsmall">
+        <img class="image" src="{{ today_temp_icon }}" style="width: 30px; height: 30px;">
+        <span class="value value--xsmall">H {{ wx_high }}° L {{ wx_low }}°</span>
+      </span>
+      <span class="flex flex--row flex--center-y gap--xsmall">
+        <img class="image" src="https://trmnl.com/images/plugins/weather/wi-raindrop.svg" style="width: 30px; height: 30px;">
+        <span class="value value--xsmall">{{ wx_rain }}% rain</span>
+      </span>
+    </div>
+  </div>
+
+  {%- comment -%} ===== Availability hero — grows to fill remaining space and centers vertically ===== {%- endcomment -%}
+  <div class="grow flex flex--col flex--center-y w--full">
+    <div class="columns">
+      <div class="column">
+        <div class="richtext text--center">
+          {% if is_busy %}
+            <span class="value value--xxlarge">In a meeting</span>
+            <span class="value value--large">until {{ current_event.end }}</span>
+          {% elsif next_event %}
+            <span class="value value--xxlarge">Available</span>
+            <span class="value value--large">until {{ next_event.start }}{% if next_is_other_day %} {{ next_day_label }}{% endif %}</span>
+          {% else %}
+            <span class="value value--xxlarge">Available</span>
+            <span class="value value--large">nothing scheduled</span>
+          {% endif %}
+        </div>
       </div>
     </div>
   </div>

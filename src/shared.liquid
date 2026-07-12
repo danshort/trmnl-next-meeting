@@ -70,5 +70,15 @@
 {% assign view_start = display_event.start %}
 {% assign view_end = display_event.end %}
 
-{% assign tempest_reference = tempest_weather_station_347799 %}
-{% assign max_temp = tempest_reference.forecast.today.maxtemp %}
+{%- comment -%} ===== Weather (Tempest) — powers the full layout's top strip ===== {%- endcomment -%}
+{% assign wx = tempest_weather_station_347799 %}
+{% assign wx_now_icon = wx.weather_image %}
+{% assign wx_now_conditions = wx.right_now_conditions %}
+{% assign wx_temp = wx.temperature %}
+{% assign wx_feels = wx.feels_like %}
+{% assign wx_humidity = wx.humidity %}
+{% assign wx_today_icon = wx.today_weather_image %}
+{% assign wx_today_conditions = wx.today_conditions %}
+{% assign wx_high = wx.forecast.today.maxtemp %}
+{% assign wx_low = wx.forecast.today.mintemp %}
+{% assign wx_rain = wx.forecast.today.precip.probability %}

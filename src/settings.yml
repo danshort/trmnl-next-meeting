@@ -1,0 +1,46 @@
+---
+name: Dan's Next Meeting
+strategy: plugin_merge
+dark_mode: "no"
+no_screen_padding: "no"
+framework_version: "2.3.7"
+
+# Merge-variable data comes from other permissioned plugin instances,
+# referenced by keyname in shared.liquid:
+#   calendar_source                -> selected Google Calendar plugin instance
+#   tempest_weather_station_347799 -> Tempest weather station plugin instance
+custom_fields:
+  - keyname: doesnt_matter
+    field_type: author_bio
+    name: About This Plugin
+    category: calendar
+    email_address: david@trmnl.com
+    description: >-
+      See the current/next room booking or your current/next calendar event.
+      Note: Developer Edition or BYOD required (needs forking).<br /><br />
+      <b>How to use:</b><br />
+      1. Connect your calendar to the native Google Calendar plugin, select the
+      desired calendars and add it to your playlist. Use the Agenda view and
+      disable "Include past events"<br />
+      2. Hide the calendar plugin.<br />
+      3. Fork this plugin and select the correct Calendar Data Source in this
+      plugin's settings.
+
+  - keyname: mode
+    field_type: select
+    name: Mode
+    default: calendar
+    options:
+      - Room
+      - Calendar
+    description: >-
+      Does this display calendar events or room bookings? Changes strings in the
+      title bar and if there are no upcoming events/reservations.
+    help_text: Shows "Next booking" or "Next event" in the title bar.
+
+  - keyname: calendar_source
+    field_type: plugin_instance_select
+    name: Calendar Data Source
+    plugin_keyname: google_calendar
+    description: Select which Google Calendar plugin instance to pull data from
+    help_text: Only your active Calendar plugins are shown.

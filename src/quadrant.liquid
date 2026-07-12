@@ -1,0 +1,46 @@
+<div class="layout layout--col">
+
+  {%- comment -%} ===== Availability hero ===== {%- endcomment -%}
+  <div class="columns">
+    <div class="column">
+      <div class="richtext text--center">
+        {% if is_busy %}
+          <span class="value value--large">In a meeting</span>
+          <span class="value value--small">until {{ current_event.end }}</span>
+        {% elsif next_event %}
+          <span class="value value--large">Available</span>
+          <span class="value value--small">until {{ next_event.start }}{% if next_is_other_day %} {{ next_day_label }}{% endif %}</span>
+        {% else %}
+          <span class="value value--large">Available</span>
+          <span class="value value--small">nothing scheduled</span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} ===== Next ===== {%- endcomment -%}
+  <div class="columns">
+    <div class="column">
+      <div class="richtext text--center">
+        <div style="display: flex; align-items: baseline; justify-content: center; gap: 8px;">
+          <span class="value value--small">Next</span>
+          {% if next_event %}
+            <span class="value value--small value--tnums">{% if next_is_other_day %}{{ next_day_label }} · {% endif %}{{ next_event.start }}</span>
+          {% endif %}
+        </div>
+        {% if next_event %}
+          <span class="value value--small clamp--1 text--center">{{ next_event.summary }}</span>
+        {% else %}
+          <span class="value value--small text--center">{{ empty_label }}</span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="title_bar">
+  <img class="image" src="https://dansshorts.com/assets/gfx/dan.gif">
+  <span class="title">Availability</span>
+  <span class="instance">{{ 'updated' | l_word: trmnl.user.locale }}: {{ "now" | date: "%s" | plus: trmnl.user.utc_offset | date: "%I:%M %p" }}</span>
+</div>

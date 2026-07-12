@@ -1,0 +1,74 @@
+{% assign plugin_reference = calendar_source %}
+{% assign now = "now" | date: "%s" | plus: trmnl.user.utc_offset %}
+{% assign today = now | date: "%Y-%m-%d" %}
+{% assign current_event = null %}
+{% assign next_event = null %}
+{% assign min_future_diff = 999999999 %}
+
+{%- comment -%} Find the current and soonest upcoming timed, confirmed events {%- endcomment -%}
+{% for event in plugin_reference.events %}
+  {% if event.all_day == false and event.status == "confirmed" %}
+    {% assign event_date = event.date_time | date: "%Y-%m-%d" %}
+    {% assign event_start = event_date | append: " " | append: event.start | date: "%s" %}
+    {% assign event_end = event_date | append: " " | append: event.end | date: "%s" %}
+    {% assign start_diff = event_start | minus: now %}
+    {% assign end_diff = event_end | minus: now %}
+
+    {%- comment -%} Currently happening: started already, not yet ended {%- endcomment -%}
+    {% if start_diff <= 0 and end_diff > 0 %}
+      {% assign current_event = event %}
+    {% endif %}
+
+    {%- comment -%} Next up: soonest event that hasn't started {%- endcomment -%}
+    {% if start_diff > 0 and start_diff < min_future_diff %}
+      {% assign min_future_diff = start_diff %}
+      {% assign next_event = event %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
+                                          {% assign plugin_reference = calendar_source %}
+
+
+{%- comment -%} Availability flag {%- endcomment -%}
+{% if current_event %}
+  {% assign is_busy = true %}
+{% else %}
+  {% assign is_busy = false %}
+{% endif %}
+
+{%- comment -%} Mode-specific strings {%- endcomment -%}
+{% if trmnl.plugin_settings.custom_fields_values.mode == "room" %}
+  {% assign status_current = "Current booking" %}
+  {% assign status_next = "Next booking" %}
+  {% assign empty_label = "Room not booked" %}
+{% else %}
+  {% assign status_current = "Current event" %}
+  {% assign status_next = "Next event" %}
+  {% assign empty_label = "No upcoming events" %}
+{% endif %}
+
+{%- comment -%} If the next event is on a later day, expose a short weekday label (e.g. "Mon") {%- endcomment -%}
+{% assign next_is_other_day = false %}
+{% if next_event %}
+  {% assign next_date = next_event.date_time | date: "%Y-%m-%d" %}
+  {% unless next_date == today %}
+    {% assign next_is_other_day = true %}
+    {% assign next_day_label = next_event.date_time | date: "%a" %}
+  {% endunless %}
+{% endif %}
+
+{%- comment -%} Backwards-compatible single-event vars still used by the half/quadrant layouts {%- endcomment -%}
+{% if current_event %}
+  {% assign display_event = current_event %}
+  {% assign status = status_current %}
+{% elsif next_event %}
+  {% assign display_event = next_event %}
+  {% assign status = status_next %}
+{% endif %}
+{% assign view_summary = display_event.summary %}
+{% assign view_start = display_event.start %}
+{% assign view_end = display_event.end %}
+
+{% assign tempest_reference = tempest_weather_station_347799 %}
+{% assign max_temp = tempest_reference.forecast.today.maxtemp %}
